@@ -1,34 +1,16 @@
 <head>
 <title>New Tab</title>
-<style>
-  #byline {
-    position: absolute;
-    bottom: 3%;
-    left: 3%;
-  }
-  #wrapper {
-    background-color: #EEE;
-    opacity: 0;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 0.8s;
-    padding: 0.4em;
-    border-radius: 6px;
-    font-family: sans-serif;
-    display: block;
-  }
-  a:link, a:visited {
-    color: #333;
-    text-decoration: none;
-  }
-  span.title {
-    font-size: large;
-  }
-  span.owner {
-    font-size: small;
-  }
-</style>
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen">
+    <script type="text/javascript" src="jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="apps.js"></script>
 </head>
 <body>
+    <div id="main">
+        <div id="apps">Apps</div>
+        <div id="appsMenu"></div>
+        <div>&nbsp;</div>
+    </div>
+    
   <div id="byline">
     <a href="#" id="wrapper">
     </a>
@@ -42,10 +24,10 @@
   document.body.style.backgroundSize = "cover";
 
   var byline = document.getElementById("wrapper");
-  byline.href =
+  byline.href = 
     'http://www.flickr.com/photos/' + cached.owner + '/' + cached.id;
 
-  if (false && localStorage['showTitle']) {
+  if (localStorage['showTitle']) {
     var title = document.createElement("span");
     title.setAttribute("class", "title");
     if (cached.title) {
@@ -58,8 +40,8 @@
       title.innerHTML = "untitled";
     }
     byline.appendChild(title);
-
-    if (localStorage['showOwner']) {
+    
+    if (localStorage['showOwner'] && cached.ownername) {
       var owner = document.createElement("span");
       owner.setAttribute("class", "owner");
       var escapedOwnername = cached.ownername.replace(
@@ -75,8 +57,8 @@
 
   window.onbeforeunload = function () {
     document.body.onmousemove = null;
-  }
-
+  };
+    
   window.setTimeout(function () {
     var mouseX = 0;
     document.body.onmousemove = function (evt) {
@@ -87,7 +69,7 @@
         byline.style.opacity = 0.6;
         document.body.onmousemove = null;
       }
-    }
+    };
   }, 200);
 </script>
 </body>

@@ -1,15 +1,18 @@
 {
   "name": "VisivoTab",
-  "version": "1.2.1",
+  "version": "1.2.2"
   "description": "Beautiful photos hand-selected by Flickr's visivo for your New Tab",
   "chrome_url_overrides": {
     "newtab": "flickrset.html"
   },
   "background_page": "background.html",
-  "permissions": [
+  "permissions": [ 
     "http://api.flickr.com/",
-    "tabs"
+    "tabs", 
+    "chrome://favicon/", 
+    "management" 
   ],
   "icons": {"48": "icon48.jpg",
-            "128": "icon128.jpg"}
+            "128": "icon128.jpg"},
+  "options_page": "options.html",
 }
