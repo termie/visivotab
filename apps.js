@@ -73,8 +73,8 @@ $(document).ready(function(){
                     c = c + 1;
                 }
             }
-            c = c + 1;
-            $('#main').css('height', 60 + (140 * (c/7)) + 'px');
+            c = c + 2;
+            $('#main').css('height', 60 + (180 * (c/7)) + 'px');
             var appName = "Web Store";
             var appIcon = "webstore.png";
             
