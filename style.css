@@ -1,0 +1,74 @@
+body {
+    background: #99F;
+}
+#byline {
+  position: absolute;
+  bottom: 3%;
+  left: 3%;
+}
+#wrapper {
+  background-color: #EEE;
+  opacity: 0;
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: 0.8s;
+  padding: 0.4em;
+  border-radius: 6px;
+  font-family: sans-serif;
+  display: block;
+}
+a:link, a:visited { 
+  color: #333;
+  text-decoration: none;
+}
+span.title {
+  font-size: large;
+}
+span.owner {
+  font-size: small;
+}
+
+#main {
+    display: none;
+    width:920px;
+    margin: 8% auto;
+    padding: 30px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.5);
+}
+.app {
+float:left;
+display:block;
+ box-sizing: border-box;
+  -webkit-perspective: 400;
+  border-radius: 10px;
+  color: black;
+  margin: 5px 3px;
+  position: relative;
+  height: 136px;
+  width: 124px; /* 920 / 7 - margin * 2 */
+}
+#apps {
+    font-family: sans-serif;
+    font-size: 20px;
+}
+
+.app a {
+    display: block;
+  -webkit-transition: background-color .5s;
+  background: rgba(255, 255, 255, 0) /* transparent white */
+              no-repeat center 10px;
+  background-size: 96px 96px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 107%;
+  padding: 111px 10px 10px;  /* 10 + 96 + 5 */
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 10px;
+}
+
+.app a:hover {
+    background: rgba(255, 255, 255, 1) /* transparent white */
+                no-repeat center 10px;
+}

@@ -1,18 +1,21 @@
 <script>
   var API_KEY = "YOUR_KEY_HERE";
-  var VISIVO_SET = "72157623563233239";
+  var TYPE = localStorage['type']; //'pool'; // 'pool' or 'photoset'
+  var SET_ID = localStorage['set_id']; //'384452@N21'; // VISIVO_SET = "72157623563233239";
   var PER_PAGE = "500";
   var shortTimeout = 500;
   var longTimeout = 5 * 60 * 1000;
-  var DEBUG = false;
+  var DEBUG = (localStorage['debug'] === 'true');
   function log (o) {
     if (DEBUG) console.log(o);
   }
+  var ownername = '';
+  var owner = '';
 
   // CONFIG OPTIONS
   localStorage["useSmallerImages"] = true;
-  localStorage["showTitle"] = false;
-  //localStorage["showOwner"] = true;
+  localStorage["showTitle"] = true;
+  localStorage["showOwner"] = true;
 
   function fetchPool(poolId, callback) {
     var req = new XMLHttpRequest();
@@ -25,7 +28,7 @@
           "extras=url_o&" +
           "per_page=" + PER_PAGE,
         true);
-    req.onload = function () { callback(req) };
+    req.onload = function () { callback(req, 'photos'); };
     req.send(null);
   }
 
@@ -40,18 +43,22 @@
           "extras=url_o&" +
           "per_page=" + PER_PAGE,
         true);
-    req.onload = function () { callback(req) };
+    req.onload = function () { callback(req, 'photoset'); };
     req.send(null);
   }
 
-  function fillCache(req) {
-    var photoset = req.responseXML.getElementsByTagName("photoset");
+  function fillCache(req, type) {
+    log(req.responseXML);
+    var photoset = req.responseXML.getElementsByTagName(type);
     var photos = req.responseXML.getElementsByTagName("photo");
-    log(photos);
+    if (type == 'photoset'){
+      ownername = photoset[0].getAttribute('ownername');
+      owner = photoset[0].getAttribute('owner');
+    }
 
     // start adding some new ones
     function againAndAgain() {
-      var photoCache = JSON.parse(localStorage["photoCache"])
+      var photoCache = JSON.parse(localStorage["photoCache"]);
       addOnePhoto(photos);
       if (photoCache.length < 30) {
         window.setTimeout(againAndAgain, shortTimeout);
@@ -76,18 +83,27 @@
     } else {
       img.src = photo.getAttribute("url_o");
     }
-    document.body.appendChild(img);
-    var photoCache = JSON.parse(localStorage["photoCache"]);
-    var cached = {"src": img.src,
-                  "title": photo.getAttribute("title"),
-                  "id": photo.getAttribute("id")
-                  }
-
-    cached.ownername = 'visivo';
-    cached.owner = 'visivo';
-
-    photoCache.push(cached);
-    localStorage["photoCache"] = JSON.stringify(photoCache);
+    if (img.src != '') {
+      document.body.appendChild(img);
+      var photoCache = JSON.parse(localStorage["photoCache"]);
+      var cached = {"src": img.src,
+                    "title": photo.getAttribute("title"),
+                    "id": photo.getAttribute("id")
+                    };
+      if (localStorage['showOwner']) {
+        if (localStorage['type'] == 'pool'){
+          cached.ownername = photo.getAttribute('ownername');
+          cached.owner = photo.getAttribute('owner');
+        }
+        else {
+          cached.ownername = ownername;
+          cached.owner = owner;
+        }
+      } else { cached.ownername = 'visivo'; cached.owner = 'visio'; }
+    
+      photoCache.push(cached);
+      localStorage["photoCache"] = JSON.stringify(photoCache);
+    }
   }
 
   function removeOnePhoto() {
@@ -105,5 +121,7 @@
         "_b.jpg";
   }
 
-  fetchSet(VISIVO_SET, fillCache);
+  if (TYPE=='pool') {fetchPool(SET_ID, fillCache);}
+  else {fetchSet(SET_ID, fillCache);}
+  //fetchSet(SET_ID, fillCache);
 </script>

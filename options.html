@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
+  <head>
+    <title>VisivoTab Options</title>
+    <script type="text/javascript">
+function save_options() {
+  var set_id = document.getElementById('set_id').value;
+  var type = 'photoset';
+  if (document.getElementById('pool').checked) {
+    type = 'pool';
+  };
+  localStorage['set_id'] = set_id;
+  localStorage['type'] = type;
+  localStorage["photoCache"] = JSON.stringify(new Array());
+  localStorage['show_apps'] = document.getElementById('show_apps').checked;
+  localStorage['debug'] = document.getElementById('debug').checked;
+  document.getElementById('message').innerHTML = "Options Saved!";
+  setTimeout(function(){    document.getElementById('message').innerHTML = "";},'2000');
+  document.getElementById('bg').src = 'background.html'
+  return true;
+}
+function restore_options() {
+  document.getElementById('set_id').value = localStorage['set_id'];
+  document.getElementById(localStorage['type']).checked = true;
+  document.getElementById('show_apps').checked = localStorage['show_apps'];
+  document.getElementById('debug').checked = localStorage['debug'];
+}
+
+    </script>
+    <style type='text/css'>
+      body {
+        background: #eee;
+        font-family: sans-serif;
+        font-size: 12pt;
+      }
+      div {
+        background: #fff;
+        display: block;
+        margin: 30px auto;
+        height: 250px;
+        width: 250px;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      label {
+        display:inline-block;
+        margin-top: 10px;
+        font-weight: bold;
+      }
+      input {
+        margin-left: 20px;
+        font-size: .8em;
+      }
+      span.note{
+        font-size: 10pt;
+        font-style: italic;
+        color: #888; 
+      }
+      iframe {
+        height: 0;
+        width: 0;
+        border: none;
+      }
+    </style>
+  </head>
+  <body onload="restore_options();">
+    <div id='content'>
+      <form>
+        <label for='type'>Type: </label><br/>
+        <input type='radio' name='type' value='pool' id='pool'>Group Pool</input><br/> <input type='radio' name='type' value='photoset' id='photoset'>Individual Photoset</input><br/>
+        <label for='set_id'>Set ID: </label><br/>
+        <span class='note'>Visivo set: 72157623563233239</span>
+        <input type='text' name='set_id' id='set_id'></input><br/>
+        <label>Options</label><br/>
+        <input type='checkbox' name='show_apps' id='show_apps'>Show Apps</input><br/>
+        <input type='checkbox' name='debug' id='debug'>Debug Mode</input><br/>
+        <a href='#' onclick="save_options();">Save</a>
+      </form>
+      <span id='message'></span>
+    </div>
+    <iframe id='bg'></iframe>
+  </body>
+</html>
